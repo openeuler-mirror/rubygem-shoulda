@@ -1,14 +1,14 @@
 %global gem_name shoulda
 Name:                rubygem-%{gem_name}
 Version:             3.6.0
-Release:             1
+Release:             2
 Summary:             Making tests easy on the fingers and eyes
 License:             MIT
 URL:                 https://github.com/thoughtbot/shoulda
 Source0:             https://rubygems.org/gems/%{gem_name}-%{version}.gem
 BuildRequires:       ruby(release) rubygems-devel ruby rubygem(jbuilder) rubygem(minitest-reporters)
 BuildRequires:       rubygem(rails) rubygem(shoulda-context) rubygem(shoulda-matchers)
-BuildRequires:       rubygem(sqlite3)
+BuildRequires:       rubygem(sqlite3) rubygem(did_you_mean)
 BuildArch:           noarch
 %description
 Making tests easy on the fingers and eyes.
@@ -42,14 +42,16 @@ GF
 sed -i "/require 'pry/ s/^/#/" test/test_helper.rb
 sed -i "/current_bundle/ s/^/#/" test/acceptance_test_helper.rb
 sed -i "/assert_appraisal/ s/^/#/" test/acceptance_test_helper.rb
-sed -i '/rails new/ s/"$/ --skip-bootsnap --skip-listen --skip-puma --skip-spring --skip-sprockets"/' \
+sed -i '/rails new/ s/"$/ --skip-bootsnap --skip-listen --skip-puma --skip-spring --skip-sprockets --skip-javascript"/' \
   test/support/acceptance/helpers/step_helpers.rb
 sed -i "/updating_bundle do |bundle|/a \\
         bundle.remove_gem 'capybara'" test/support/acceptance/helpers/step_helpers.rb
 sed -i "/updating_bundle do |bundle|/a \\
         bundle.remove_gem 'selenium-webdriver'" test/support/acceptance/helpers/step_helpers.rb
 sed -i "/updating_bundle do |bundle|/a \\
-        bundle.remove_gem 'chromedriver-helper'" test/support/acceptance/helpers/step_helpers.rb
+        bundle.remove_gem 'rack-mini-profiler'" test/support/acceptance/helpers/step_helpers.rb
+sed -i "/updating_bundle do |bundle|/a \\
+        bundle.remove_gem 'webdrivers'" test/support/acceptance/helpers/step_helpers.rb
 sed -i '/ActiveRecord::Migration/ s/$/["5.2"]/' \
   test/acceptance/rails_integration_test.rb
 sed -i 's/render nothing: true/head :ok/' \
@@ -79,5 +81,8 @@ popd
 %{gem_instdir}/test
 
 %changelog
+* Thu Mar 3 2022 liyanan <liyanan32@huawei.com> - 3.6.0-2
+- fix build error
+
 * Wed Aug 19 2020 xiezheng <xiezheng4@huawei.com> - 3.6.0-1
 - package init
