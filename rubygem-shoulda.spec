@@ -1,7 +1,7 @@
 %global gem_name shoulda
 Name:                rubygem-%{gem_name}
 Version:             3.6.0
-Release:             2
+Release:             3
 Summary:             Making tests easy on the fingers and eyes
 License:             MIT
 URL:                 https://github.com/thoughtbot/shoulda
@@ -52,6 +52,8 @@ sed -i "/updating_bundle do |bundle|/a \\
         bundle.remove_gem 'rack-mini-profiler'" test/support/acceptance/helpers/step_helpers.rb
 sed -i "/updating_bundle do |bundle|/a \\
         bundle.remove_gem 'webdrivers'" test/support/acceptance/helpers/step_helpers.rb
+sed -i "/updating_bundle do |bundle|/a \\
+        bundle.remove_gem 'chromedriver-helper'" test/support/acceptance/helpers/step_helpers.rb
 sed -i '/ActiveRecord::Migration/ s/$/["5.2"]/' \
   test/acceptance/rails_integration_test.rb
 sed -i 's/render nothing: true/head :ok/' \
@@ -81,6 +83,10 @@ popd
 %{gem_instdir}/test
 
 %changelog
+* Sat Mar 26 2022 wujie <wujie@nj.iscas.ac.cn> - 3.6.0-3
+- Remove useless test dependencies chromedriver-helper
+  Refer to http://fedora.riscv.rocks/koji/buildinfo?buildID=96527
+
 * Thu Mar 3 2022 liyanan <liyanan32@huawei.com> - 3.6.0-2
 - fix build error
 
